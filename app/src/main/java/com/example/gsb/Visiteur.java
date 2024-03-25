@@ -1,34 +1,26 @@
 package com.example.gsb;
 
-public class Visiteur {
-    private String id;
+
+public class Visiteur implements java.io.Serializable {
+
+    private String token;
+
+    private String visiteurId;
+    private String email;
+    private String password;
     private String nom;
     private String prenom;
-    private String tel;
-    private String password;
-    private String email;
-    private String dateEmbauche;
 
-
-    public String getId() {
-        return id;
+    public Visiteur(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
-    public String getNom() {
-        return nom;
+    public String getToken() {
+        return token;
     }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-
-    public String getDateEmbauche() {
-        return dateEmbauche;
-    }
-
-    public String getTel() {
-        return tel;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getEmail() {
@@ -43,8 +35,8 @@ public class Visiteur {
         return password;
     }
 
-    public void setPassword(String Password) {
-        this.password = Password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

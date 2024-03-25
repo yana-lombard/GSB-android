@@ -1,10 +1,14 @@
 package com.example.gsb;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public interface GSBService  {
+public interface GSBService {
     @POST("api/auth/login")
-    static Call<Visiteur> login(Visiteur visiteur);
+    Call<Visiteur> login(@Body Visiteur visiteur);
 
+    @GET("api/praticients")
+    Call<Visiteur> register(@Body Visiteur visiteur);
 }
