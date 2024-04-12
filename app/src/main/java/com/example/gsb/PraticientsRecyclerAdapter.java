@@ -10,44 +10,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class PraticientsRecyclerAdapter  extends RecyclerView.Adapter<PraticientsRecyclerAdapter.RecyclerViewHolder>{
+public class PraticientsRecyclerAdapter extends RecyclerView.Adapter<PraticientsRecyclerAdapter.ViewHolder> {
 
-    private List<Praticients> praticientsList;
+    private List<Praticients> mPraticientsList;
 
     public PraticientsRecyclerAdapter(List<Praticients> praticientsList) {
-        this.praticientsList = praticientsList;
+        mPraticientsList = praticientsList;
     }
 
     @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerViewHolder viewHolder;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerviewlayout2, parent, false);
-        viewHolder = new RecyclerViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-    holder.textViewNom.setText(praticientsList.get(position).getNom());
-    holder.textViewPrenom.setText(praticientsList.get(position).getPrenom());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Praticients currentPraticient = mPraticientsList.get(position);
+        holder.textViewNom.setText(currentPraticient.getNom());
+        holder.textViewPrenom.setText(currentPraticient.getPrenom());
     }
 
     @Override
     public int getItemCount() {
-        return praticientsList.size();
+        return mPraticientsList.size();
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewNom;
         private TextView textViewPrenom;
 
-
-        public RecyclerViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNom = itemView.findViewById(R.id.textViewNomPraticient);
             textViewPrenom = itemView.findViewById(R.id.textViewPrenomPraticient);
-
         }
     }
 }

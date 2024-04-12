@@ -1,28 +1,67 @@
 package com.example.gsb;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.gsb.databinding.ActivityMain2Binding;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity2 extends AppCompatActivity {
+    private ActivityMain2Binding binding;
+    private RecyclerView recyclerView;
+    private PraticientsRecyclerAdapter adapter;
+    private Visiteur visiteurApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        binding = ActivityMain2Binding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+        visiteurApi = (Visiteur) getIntent().getSerializableExtra("visiteur");
 
-        ArrayList<Praticients> praticientsList = new ArrayList<>();
-        praticientsList.add(new Praticients("66019f38249fdc7d472a9076","Carlos","Veum","869-741-8954","Margie_Quigley70@yahoo.com" ,"013 Scottie Loop","74000","Novi"));
-        praticientsList.add(new Praticients("66019f37249fdc7d472a9074","Aidan","Fritsch","671-564-0796","Lilian_Wiegand@gmail.com","6180 Kendrick Fork","74000","East Kentonfurt"));
-        praticientsList.add(new Praticients("66019ee5249fdc7d472a9071","Emiliano","Jenkins","919-382-9793","Madaline77@yahoo.com" ,"020 Harvey Cliff","74000","Bel Air South"));
+
+        ArrayList<Praticients> praticiens = new ArrayList<>();
+
+        binding.recyclerviewlayout2.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        binding.recyclerviewlayout2.setLayoutManager(layoutManager);
+        binding.recyclerviewlayout2.setFocusable(false);
+
+        PraticientsRecyclerAdapter myAdapterPraticiens = new PraticientsRecyclerAdapter(praticiens); // Remplacez PraticientsRecyclerAdapter par le nom correct de votre adaptateur
+        binding.recyclerviewlayout2.setAdapter(myAdapterPraticiens);
+
+        GSBService gsbService = RetroFitClientInstance.getRetrofitInstance().create(GSBService.class);
+        Call<Visiteur> call = gsbService.getVisiteurId("Bearer " + visiteurApi.getToken(), visiteurApi.getVisiteurId());
+        call.enqueue(new Callback<Visiteur>() {
+            @Override
+            public void onResponse(Call<Visiteur> call, Response<Visiteur> response) {
+                visiteurApi = response.body();
+                if (visiteurApi != null) {
+                    for (Praticients praticient : visiteurApi.getPortefeuillePraticiens()) {
+                        praticiens.add(praticient);
+                    }
+                    myAdapterPraticiens.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Visiteur> call, Throwable t) {
+                Toast.makeText(MainActivity2.this, "Une erreur est survenue !" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
-
-    binding.recyclerViewPraticients.addOnItemTouchListener(new RecyclerTouchPraticientListener(this, binding.recyclerViewPraticients, new RecyclerViewPraticientsClickListerner() {
-        @Override
-        public void onClick(View view, int position) {
-            Toast.makeText(MainActivity2.this, "Position : " + position, Toast.LENGTH_SHORT).show();
-        }
-    });
 }

@@ -25,7 +25,7 @@
         android:ems="10"
         android:hint="email"
         android:inputType="text"
-        android:text="velma55@gmail.com"
+        android:text="donnell.dare50@yahoo.com"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titre" />
@@ -38,7 +38,7 @@
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword"
-        android:text="ULAXE9EXF2C0ijN"
+        android:text="ZhpOTcLKsUvc3Rx"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editEmail" />

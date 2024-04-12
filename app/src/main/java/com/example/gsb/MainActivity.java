@@ -40,14 +40,13 @@ public class MainActivity extends AppCompatActivity {
                         visiteur = response.body();
                         Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
                         intent.putExtra("visiteur", visiteur);
+                        startActivity(intent);
                     }
                     @Override
                     public void onFailure(Call<com.example.gsb.Visiteur> call, Throwable t) {
                         Toast.makeText(MainActivity.this, "Une erreur est survenue !" + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
             }
         });
     }
