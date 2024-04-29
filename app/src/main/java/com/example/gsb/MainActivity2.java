@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -62,6 +63,27 @@ public class MainActivity2 extends AppCompatActivity {
                 Toast.makeText(MainActivity2.this, "Une erreur est survenue !" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+            binding.recyclerviewlayout2.addOnItemTouchListener(new RecyclerTouchPraticientListener(this,
+                binding.recyclerviewlayout2, new RecyclerViewPraticientsClickListerner() {
+            @Override
+            public void onClick(View view, final int position) {
+                // Obtenez le praticien à la position cliquée
+                Praticients praticien = praticiens.get(position);
+                // Créez une nouvelle intention pour démarrer Activity3
+                Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
+                // Ajoutez le nom et le prénom du praticien à l'intention
+                intent.putExtra("nomPraticien", praticien.getNom());
+                intent.putExtra("prenomPraticien", praticien.getPrenom());
+                intent.putExtra("telPraticien", praticien.getTel());
+                intent.putExtra("emailPraticien", praticien.getEmail());
+                intent.putExtra("ruePraticien", praticien.getRue());
+                intent.putExtra("villePraticien", praticien.getVille());
+                // Démarrez Activity3
+                startActivity(intent);
+            }
+
+        }));
 
     }
 }
