@@ -20,6 +20,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity2 extends AppCompatActivity {
+
+    //Declaration des variables
     private ActivityMain2Binding binding;
     private RecyclerView recyclerView;
     private PraticientsRecyclerAdapter adapter;
@@ -28,27 +30,34 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initialisation de la vue
         binding = ActivityMain2Binding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        //Recuperation de l'objet visiteur
         visiteurApi = (Visiteur) getIntent().getSerializableExtra("visiteur");
 
-
+        //Initialisation de la liste des praticiens
         ArrayList<Praticients> praticiens = new ArrayList<>();
 
+        //Configuration du RecyclerView
         binding.recyclerviewlayout2.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         binding.recyclerviewlayout2.setLayoutManager(layoutManager);
         binding.recyclerviewlayout2.setFocusable(false);
 
+        //Création de l'adaptateur pour le RecyclerView
         PraticientsRecyclerAdapter myAdapterPraticiens = new PraticientsRecyclerAdapter(praticiens); // Remplacez PraticientsRecyclerAdapter par le nom correct de votre adaptateur
         binding.recyclerviewlayout2.setAdapter(myAdapterPraticiens);
 
+        //Création du service GSBService
         GSBService gsbService = RetroFitClientInstance.getRetrofitInstance().create(GSBService.class);
+        //Appel de la méthode getVisiteurId pour récupérer les informations du visiteur
         Call<Visiteur> call = gsbService.getVisiteurId("Bearer " + visiteurApi.getToken(), visiteurApi.getVisiteurId());
         call.enqueue(new Callback<Visiteur>() {
             @Override
             public void onResponse(Call<Visiteur> call, Response<Visiteur> response) {
+                //Si la reponse est positive, on recupere les visiteur et on les ajoute à la liste des praticiens
                 visiteurApi = response.body();
                 if (visiteurApi != null) {
                     for (Praticients praticient : visiteurApi.getPortefeuillePraticiens()) {
@@ -60,10 +69,12 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Visiteur> call, Throwable t) {
+                //Si la reponse est negative, on affiche un message d'erreur
                 Toast.makeText(MainActivity2.this, "Une erreur est survenue !" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
+            //Ajout d'un listener sur les elements du RecyclerView
             binding.recyclerviewlayout2.addOnItemTouchListener(new RecyclerTouchPraticientListener(this,
                 binding.recyclerviewlayout2, new RecyclerViewPraticientsClickListerner() {
             @Override
